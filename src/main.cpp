@@ -19,18 +19,24 @@ void print_bulk_cmd(std::ostream &out,
 int main(int argc, char *argv[]) {
 
   std::string command;
+  size_t counter = 0;
+
   std::vector<std::string> commands_block;
 
   while (std::getline(std::cin, command)) {
     if (command == "{") {
-
-      print_bulk_cmd(std::cout, commands_block);
-      commands_block.clear();
+      if (counter == 0) {
+        print_bulk_cmd(std::cout, commands_block);
+        commands_block.clear();
+      }
+      counter++;
 
     } else if (command == "}") {
-
-      print_bulk_cmd(std::cout, commands_block);
-      commands_block.clear();
+      counter--;
+      {
+        print_bulk_cmd(std::cout, commands_block);
+        commands_block.clear();
+      }
 
     } else {
       commands_block.push_back(command);
