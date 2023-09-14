@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 void print_bulk_cmd(std::ostream &out,
                     const std::vector<std::string> &commands) {
@@ -22,7 +23,10 @@ int main(int argc, char *argv[]) {
   size_t counter = 0;
 
   std::vector<std::string> commands_block;
-
+  if(true)
+{
+  //throw std::runtime_error{ "I'd be glad to make an exception." };
+}
   while (std::getline(std::cin, command)) {
     if (command == "{") {
       if (counter == 0) {
