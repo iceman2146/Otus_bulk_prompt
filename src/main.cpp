@@ -1,53 +1,34 @@
-#include <iostream>
+#include "read.h"
+#include "execute.h"
+#include "log.h"
+
 #include <string>
-#include <vector>
-#include <stdexcept>
+#include <memory>
+/**
+ * @file main.cpp 
+ * 
+ */
 
-void print_bulk_cmd(std::ostream &out,
-                    const std::vector<std::string> &commands) {
-  if (commands.empty())
-    return;
+/**
+* @brief функция main
+* Основная функция main
+* @return возвращает код ошибки
+*/
 
-  out << "bulk:";
-
-  for (const auto &i : commands) {
-    out << i;
-    if (commands[commands.size() - 1] != i)
-      out << ',';
-  }
-}
-
-int main(int argc, char *argv[]) {
-
-  std::string command;
-  size_t counter = 0;
-
-  std::vector<std::string> commands_block;
-  if(true)
+int main(int argc, const char **argv)
 {
-  //throw std::runtime_error{ "I'd be glad to make an exception." };
-}
-  while (std::getline(std::cin, command)) {
-    if (command == "{") {
-      if (counter == 0) {
-        print_bulk_cmd(std::cout, commands_block);
-        commands_block.clear();
-      }
-      counter++;
-
-    } else if (command == "}") {
-      counter--;
-      {
-        print_bulk_cmd(std::cout, commands_block);
-        commands_block.clear();
-      }
-
-    } else {
-      commands_block.push_back(command);
-    }
+  if (argc < 2)
+  {
+    std::cerr << "bulk.exe <N>(N>2)(bulk.exe 4)" << std::endl;
+    return 1;
   }
+  std::size_t blocks{0};
 
-  print_bulk_cmd(std::cout, commands_block);
+  std::shared_ptr<Reader> read = Reader::create(blocks);
+  std::shared_ptr<Executer> execute = Executer::create(read);
+  std::shared_ptr<Logger> log = Logger::create(read);
+
+  read->enter();
 
   return 0;
 }
